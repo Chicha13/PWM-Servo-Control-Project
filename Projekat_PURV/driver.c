@@ -192,18 +192,24 @@ static struct i2c_board_info pwm_click_board_info = {
 static int __init pwm_click_init(void) {
     int ret;
 	
+	// Get the I2C adapter for the specified bus
 	pwm_click_adapter=i2c_get_adapter(I2C_BUS_AVAILABLE);
 	
+	 // Check if the adapter was successfully obtained
 	 if( pwm_click_adapter != NULL )
     {
+		 // Create a new I2C client device using the adapter and board info
         pwm_click_client = i2c_new_client_device(pwm_click_adapter, &pwm_click_board_info);
         
+		// Check if the client device was successfully created
         if( pwm_click_client != NULL )
         {
+			// Add the PWM Click driver to the I2C subsystem
            i2c_add_driver(&pwm_click_driver);
             ret = 0;
         }
-        
+		
+        // Release the I2C adapter (cleanup)
         i2c_put_adapter(pwm_click_adapter);
     }
 	struct device *dev;
@@ -214,7 +220,7 @@ static int __init pwm_click_init(void) {
         return ret;
     }
 
-    // Create a character device
+    // Create a character device structure
     cdev = cdev_alloc();
     if (!cdev) {
         pr_err("Failed to allocate cdev\n");
@@ -222,7 +228,7 @@ static int __init pwm_click_init(void) {
         return -ENOMEM;
     }
 
-    // Set up file operations
+    // Initialize the character device with file operations
     cdev_init(cdev, &pwm_click_fops);
     ret = cdev_add(cdev, pwm_click_dev_number, 1);
     if (ret < 0) {
@@ -240,7 +246,7 @@ static int __init pwm_click_init(void) {
         unregister_chrdev_region(pwm_click_dev_number, 1);
         return PTR_ERR(pwm_click_class);
     }
-
+	// Create a device node in /dev
 	  dev = device_create(pwm_click_class, NULL, pwm_click_dev_number, NULL, "pwm_click_device");
     if (IS_ERR(dev)) {
         pr_err("Failed to create device\n");
