@@ -14,11 +14,14 @@ Additionally, the project should include functionality for recording servo movem
 ### **Implementation:**
 
 * **PWM Click Driver**  
- The pwm_click driver is the core of the project its designed to facilitate the interaction between a Raspberry Pi and the PWM Click add-on board using the I2C communication protocol. The pwm_click_ioctl is a     function implemented in the driver to handle input/output control (IOCTL) requests from userspace (communicate with the driver from the application).
+ The pwm_click driver is the core of the project its designed to facilitate the interaction between a Raspberry Pi and the PWM Click add-on board using the I2C communication protocol. The pwm_click_ioctl is a function implemented in the driver to handle input/output control (IOCTL) requests from userspace (communicate with the driver from the application).
 
 * **The Application**  
  The application is designed to allow the control of two seperate servo motors, enabling users to control servo movement via key inputs or specific angle values.
- The functionality of recording and saving servo movements in a CSV file for future analysis is included in the application.
+ The functionality of recording and saving servo movements in a CSV file ("record_servo_movements.csv") for future analysis is included in the application.
+
+* **JupiterNotebook Script**  
+ The script can be used to plot the data from the CSV file to a graphical inteface in Jupiter Notebook.
 
 ### **Usage:**  
 The provided Makefile is meant to be used directly on the ARM system. In orded to compile/insmod the driver successfully you will have to ensure that your ARM-based system has the necessary development tools installed. On the other hand if you wish to cross-compile the driver you'll need a cross-compilation toolchain that targets ARM architecture.
